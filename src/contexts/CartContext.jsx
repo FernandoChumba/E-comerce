@@ -36,7 +36,7 @@ const CartProvider = ({children}) => {
     //console.log(cart)
 
 
-    //eliminar del carrito
+    //eliminar elemento  del carrito
     const removeFromCart = (id) => {
         const newCart = cart.filter (item =>{
             return item.id !== id;
@@ -44,8 +44,37 @@ const CartProvider = ({children}) => {
         setCart(newCart)
     }
 
+    //eleminiar todo el carrito
     const clearCart = () => {
         setCart([]);
+    }
+    //incrementar monto
+    const increaseAmount = (id) => {
+        const cartItem = cart.find((item) => item.id === id);
+        addToCart(cartItem,id)
+      
+      
+
+    }
+    //mermar monto
+    const decreaseAmount = (id) => {
+        const cartItem = cart.find((item)=> item.id === id);
+        removeFromCart(id)
+        if(cartItem) {
+            const newCart = cart.map (item => {
+                if(item.id === id ){
+                    return{...item, amount: cartItem.amount - 1 };
+                }else {
+                    return item;
+                }
+            });
+            setCart(newCart);
+        }
+            if(cartItem.amount < 2 ){
+                removeFromCart(id);
+            }
+        
+
     }
 
 
@@ -55,7 +84,7 @@ const CartProvider = ({children}) => {
 
 
     return (
-        <CartContex.Provider value={{cart,addToCart, removeFromCart, clearCart}}>{children}</CartContex.Provider>
+        <CartContex.Provider value={{cart,addToCart, removeFromCart, clearCart, increaseAmount , decreaseAmount}}>{children}</CartContex.Provider>
     );
 };
 export default CartProvider;
