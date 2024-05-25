@@ -16,7 +16,7 @@ import {CartContex} from '../contexts/CartContext'
 const Sidebar = () =>{
     const {isOpen, handleClose}=useContext(SidebarContext);
    // console.log(useContext(CartContex))
-   const { cart , clearCart} =  useContext(CartContex);
+   const { cart , clearCart , total} =  useContext(CartContex);
     {/*lo manda al sidebar a la derecha si este esta abierto  */}
     return <div className={`${
         isOpen ? 'right-0': '-right-full'
@@ -29,22 +29,26 @@ const Sidebar = () =>{
             <IoMdArrowForward className='text-2xl'></IoMdArrowForward>
         </div>
     </div>
-    <div>{cart.map(item => {
+    <div className='flex flex-col gap-y-2 h-[620px] lg:h-[640px] overflow-y-auto overflow-x-hidden border-b'>
+        {cart.map(item => {
         return <CartItem item={item} key={item.id}/>
     })}
-    <div className='bg-green-300 flex flex-col gap-y-2 py-2 mt-4'>
+    </div>
+    <div className='flex flex-col gap-y-2 py-2 mt-4'>
         <div className='flex w-full justify-between items-center '>
             {/*total */}
             <div className='uppercase font-semibold'>
-                <span className='mr-2'>Total:</span>$1000
+                <span className='mr-2'>Total:</span>${parseFloat(total).toFixed(2)}
             </div>
             {/*eliminar carrito */}
             <div onClick={clearCart} className='cursor-pointer py-4 bg-red-500 text-white w-12 h-12 flex justify-center items-center text-xl'>
-                <FiTrash2/></div>
+                <FiTrash2/>
+                </div>
         </div>
+        <Link to={'/'} className='bg-gray-200 flex p-4 justify-center items-center text-black w-full font-medium'>Vier Cart</Link>
+        <Link to={'/'} className='bg-slate-600 flex p-4 justify-center items-center text-white w-full font-medium'>Checkout</Link>
     </div>
-       
-    </div>
+
     </div>
 }
 
